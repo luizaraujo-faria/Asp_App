@@ -1,5 +1,10 @@
+using Asp_App.Repositories;
+using Asp_App.Repositories.Contracts;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

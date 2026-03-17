@@ -1,10 +1,11 @@
 using Asp_App.Repositories.Contracts;
 using Asp_App.Models;
 using Asp_App.DTOs;
+using MySql.Data.MySqlClient;
 
 namespace Asp_App.Repositories
 {
-    public class UserRepository : IUserContract
+    public class UserRepository : IUserRepository
     {
         private readonly string _mySqlConnection;
         public UserRepository(IConfiguration config)
@@ -33,7 +34,7 @@ namespace Asp_App.Repositories
                     Email = reader.GetString("email"),
                     UserPassword = reader.GetString("userPassword"),
                     Cpf = reader.GetString("cpf"),
-                    BirthDate = reader.GetDateTime("birthDate")
+                    BirthDate = DateOnly.FromDateTime(reader.GetDateTime("birthDate"))
                 });
             }
 
@@ -61,7 +62,7 @@ namespace Asp_App.Repositories
                     Email = reader.GetString("email"),
                     UserPassword = reader.GetString("userPassword"),
                     Cpf = reader.GetString("cpf"),
-                    BirthDate = reader.GetDateTime("birthDate")
+                    BirthDate = DateOnly.FromDateTime(reader.GetDateTime("birthDate"))
                 };
             }
 
@@ -122,12 +123,12 @@ namespace Asp_App.Repositories
 
             using var cmd = new MySqlCommand(query, conn);
 
-            // cmd.Parameters.AddWithValue("@id", user.UserId);
+            cmd.Parameters.AddWithValue("@id", user.UserId);
             cmd.Parameters.AddWithValue("@name", user.UserName ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@email", user.Email ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@password", user.UserPassword ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@cpf", user.Cpf ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@birthDate", user.BirthDate ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@birthDate", user.BirthDate == default ? DBNull.Value : user.BirthDate);
 
             cmd.ExecuteNonQuery();
         }

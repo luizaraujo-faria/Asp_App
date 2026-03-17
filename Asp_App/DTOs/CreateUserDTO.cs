@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Asp_App.DTOs
 {
     public class CreateUserDTO
@@ -8,7 +10,7 @@ namespace Asp_App.DTOs
         public string UserName {get;set;}
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Email é obrigatório!")]
-        [Length(maximumLength: 100, ErrorMessage = "Email deve conter no máximo 100 caracteres!")]
+        [MaxLength(100, ErrorMessage = "Email deve conter no máximo 100 caracteres!")]
         [EmailAddress(ErrorMessage = "Email inválido!")]
         [DataType(DataType.EmailAddress)]
         public string Email {get;set;}
