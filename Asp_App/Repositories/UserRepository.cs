@@ -10,7 +10,7 @@ namespace Asp_App.Repositories
         private readonly string _mySqlConnection;
         public UserRepository(IConfiguration config)
         {
-            _mySqlConnection = config.GetConnectionString("MySqlConnection");
+            _mySqlConnection = config.GetConnectionString("MySqlConnection")!;
         }
 
         public IEnumerable<User> GetAll()
@@ -81,7 +81,7 @@ namespace Asp_App.Repositories
             cmd.Parameters.AddWithValue("@vEmail", newUser.Email);
             cmd.Parameters.AddWithValue("@vUserP", newUser.UserPassword);
             cmd.Parameters.AddWithValue("@vCpf", newUser.Cpf);
-            cmd.Parameters.AddWithValue("@vBirthDate", newUser.BirthDate);
+            cmd.Parameters.AddWithValue("@vBirthDate", newUser.BirthDate.ToDateTime(TimeOnly.MinValue));
 
             cmd.ExecuteNonQuery();
         }
